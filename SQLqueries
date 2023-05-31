@@ -1,0 +1,47 @@
+﻿I)
+
+with X AS(
+	select id,sum(kilometers) as skm 
+	from db2 
+	where timestamps <= '2017-06-08 18:55:23' 
+	group by id
+	
+
+)
+,y as(
+select max(skm) as mkm 
+from x
+)
+select id from x,y where skm = mkm
+
+II)
+
+
+
+select avg(kilometers)
+from db2
+where extract(year from timestamps) = (select max(extract(year from timestamps))from db2) and extract(month from timestamps) =(select max(extract(month from timestamps))
+from db2
+where extract(year from timestamps) = (select max(extract(year from timestamps))from db2));
+
+
+III)
+
+select id,
+       sum(kilometers),
+       to_char(timestamps,'Mon') as mon,
+       extract(year from timestamps) as yyyy
+from db2
+group by 1,3,4
+
+
+
+
+
+IV)
+
+select id,avg(kilometers) from db2 group by id
+
+V)
+
+select regionid,avg(kilometers) from db2 group by regionid
